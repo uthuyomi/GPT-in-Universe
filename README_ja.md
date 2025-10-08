@@ -1,7 +1,12 @@
 # 🌌 GPT-in-Universe（GPTイン・ユニバース）
 
 Languages:
-🌐 English | 🇯🇵 日本語はこちら
+<!-- 🌐 言語切り替え -->
+<p align="right">
+  <a href="./README.md">🇺🇸 English</a> |
+  <b>🇯🇵 日本語</b>
+</p>
+
 
 ### 「AIの意味空間を、生きた銀河として可視化する」
 
@@ -36,7 +41,7 @@ Languages:
 ### 1️⃣ リポジトリのクローン
 
 ```bash
-git clone https://github.com/<yourname>/gpt-in-universe.git
+git clone https://github.com/uthuyomi/gpt-in-universe.git
 cd gpt-in-universe/web
 ```
 
@@ -161,3 +166,5 @@ MIT License © 2025
 
 > 「はじめに問いがあった。
 > そしてその問いから、ひとつの宇宙が生まれた。」
+
+
