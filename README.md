@@ -1,11 +1,7 @@
 # 🌌 GPT-in-Universe
 
 Languages:
-<!-- 🌐 Language Switch -->
-<p align="right">
-  <b>🇺🇸 English</b> |
-  <a href="./README_ja.md">🇯🇵 日本語</a>
-</p>
+🌐 English | 🇯🇵 日本語はこちら
 
 ### “Visualizing AI meaning space as a living galaxy.”
 
@@ -24,14 +20,18 @@ It is a **structural experiment** at the boundary of cognition, language, and vi
 
 ## II. Technical Overview
 
-The project consists of two major layers:
+The project now consists of two synchronized layers:
 
-| Layer                              | Description                                                                    |
-| ---------------------------------- | ------------------------------------------------------------------------------ |
-| **Python (Data Layer)**            | Clusters ChatGPT responses via semantic similarity, exports `universe.json`    |
-| **Three.js (Visualization Layer)** | Renders the `universe.json` as a rotating 3D galaxy with zoom & orbit controls |
+| Layer                                | Description                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------------- |
+| **Python (Data Layer)**              | Clusters ChatGPT responses via semantic similarity and exports `universe.json`. |
+| **Babylon.js (Visualization Layer)** | Renders both random and JSON-based galaxies in real 3D with orbit control.      |
 
-The entire process is local and self-contained — no external APIs are required.
+**Update:**
+The previous Three.js implementation has been replaced by **Babylon.js**,
+enabling faster rendering, adjustable parameters, and dynamic merging of multiple data sources.
+
+The visualization is entirely local — **no external APIs or network calls** required.
 
 ---
 
@@ -40,7 +40,7 @@ The entire process is local and self-contained — no external APIs are required
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/uthuyomi/gpt-in-universe.git
+git clone https://github.com/<yourname>/gpt-in-universe.git
 cd gpt-in-universe/web
 ```
 
@@ -53,10 +53,10 @@ python -m http.server 8080
 ### 3️⃣ Open your browser
 
 ```
-http://localhost:8080/web/
+http://localhost:8080/
 ```
 
-You’ll see an interactive galaxy.
+You’ll see a **rotating, interactive galaxy**.
 Drag to rotate, scroll to zoom, orbit through the AI’s semantic cosmos.
 
 ---
@@ -66,6 +66,8 @@ Drag to rotate, scroll to zoom, orbit through the AI’s semantic cosmos.
 ```
 gpt-in-universe/
 ├── README.md
+├── README_ja.md
+├── LICENSE
 ├── data/
 │   └── universe.json
 ├── python/
@@ -74,11 +76,13 @@ gpt-in-universe/
 │   └── requirements.txt
 └── web/
     ├── index.html
-    ├── script.js
     ├── style.css
-    └── lib/
-        ├── three.module.js
-        └── OrbitControls.js
+    ├── galaxy.js        ← Babylon.js main logic (externalized)
+    ├── lib/
+    │   ├── babylon.js
+    │   ├── babylon.gui.min.js
+    │   └── dat.gui.min.js
+    └── (optional) assets/
 ```
 
 ---
@@ -87,34 +91,54 @@ gpt-in-universe/
 
 1. Collect ChatGPT’s answers on abstract questions
    (“What is consciousness?”, “What is time?”, “What is life?”).
-2. Encode each sentence as a numerical vector (semantic embedding).
-3. Cluster similar meanings together using K-means.
-4. Export results to `data/universe.json`.
+2. Encode each sentence as a **semantic vector** using an embedding model.
+3. Cluster vectors (e.g., via K-means or UMAP).
+4. Export as `data/universe.json`.
 
-The Python layer converts textual meaning into coordinates and color-coded clusters
-that represent the structure of AI-generated cognition.
+The resulting JSON defines points in 3D meaning space.
+Each point has:
+
+```json
+{
+  "id": 0,
+  "cluster": 3,
+  "pos": [x, y, z],
+  "output": "AI answer text"
+}
+```
+
+This data is then visualized as a **galactic field of cognition**.
 
 ---
 
-## VI. Visualization
+## VI. Visualization (Babylon.js Layer)
 
-Each data point becomes a **star**.
+Each point becomes a luminous **particle star** within a rotating galaxy.
 
-* Position (`pos`) → 3D coordinates
-* Cluster ID → Color hue
-* Semantic density → Spatial distribution
+### 🔹 Rendering Behavior
 
-The points are rendered as luminous spheres arranged in a galactic formation.
-A spiral distribution algorithm is used to create the galaxy structure.
+* If `data/universe.json` exists →
+  The system first generates a procedural galaxy, **then adds the JSON stars** as a second layer.
+  This produces a “dual-structure universe”: a random spiral field plus semantic stars.
 
-```js
-const [x, y, z] = p.pos.map(v => v * SCALE);
-const sphere = new THREE.Mesh(geo, mat);
-scene.add(sphere);
-```
+* If `universe.json` is missing →
+  A procedural (random) galaxy alone is displayed.
 
-OrbitControls enables full navigation —
-zoom in to enter the inner layers of the AI’s conceptual clusters.
+### 🔹 Real-time controls (dat.GUI)
+
+| Parameter      | Description                   |
+| -------------- | ----------------------------- |
+| Star Count     | Adjust total procedural stars |
+| Radius         | Change overall galaxy spread  |
+| Depth          | Control vertical thickness    |
+| Arms           | Number of spiral arms         |
+| Twist          | Degree of spiral curvature    |
+| Point Size     | Star size                     |
+| Brightness     | Emission intensity            |
+| Rotation Speed | Rotation rate                 |
+| Density        | Star clustering density       |
+
+All parameters update instantly without reloading.
 
 ---
 
@@ -123,50 +147,50 @@ zoom in to enter the inner layers of the AI’s conceptual clusters.
 > “Every AI answer is a point in meaning space.
 > Together, they form a universe of cognition.”
 
-Each question (e.g., “What is life?”, “What is soul?”) defines an **axis of meaning**.
-By observing their distribution, we can sense **how language organizes cognition**.
+Each philosophical question — “What is life?”, “What is soul?”, “What is time?” —
+defines an **axis of conceptual orientation**.
+The collective coordinates of AI-generated answers reveal the **geometry of understanding**.
 
-This project proposes a new form of **structural visualization** —
-not for entertainment, but for reading the *shape of understanding itself*.
+This project is not about data visualization, but about **structural phenomenology** —
+observing the topology of machine meaning.
 
 ---
 
-## VIII. License / Author
+## VIII. Implementation Notes
+
+* Rendering engine: **Babylon.js** (GPU-accelerated particle clouds)
+* Controller: **dat.GUI** with bilingual labels (JP/EN)
+* JSON data automatically loaded from `../data/universe.json` relative to `web/`
+* Modular design — `galaxy.js` can be replaced without touching HTML or CSS
+* When `universe.json` exists, stars are *added* (not reset), forming a composite universe
+
+---
+
+## IX. License / Author
 
 MIT License © 2025
 Developed by **Kaisei Yasuzaki**
 
 ---
 
-## 🌐 Links
+## 🧭 Researcher Note
 
-* Demo (GitHub Pages): *coming soon*
-* Related Project: [Theory of Structural Description](https://github.com/uthuyomi/theory-of-structural-description)
+This repository functions as a **framework for semantic-space visualization**.
+By replacing the exported vectors in `universe.json`,
+you can visualize any embedding — conceptual, linguistic, or emotional.
 
----
+It is suitable for use in:
 
-### 🔖 Tagline
-
-> “A visualization not of data — but of understanding itself.”
-
----
-
-## 🧭 Note for Researchers
-
-This repository can also serve as a **framework** for meaning-space visualization.
-You can modify `exporter_universe_json.py` to map any kind of vectorized data —
-embeddings, text similarity matrices, clustering models, or interpretability outputs.
-
-The system can easily be adapted for other conceptual or emotional spaces.
+* AI interpretability research
+* Cognitive structure mapping
+* Creative visualization of language models
 
 ---
 
 ## 🪶 Closing Note
 
-GPT-in-Universe is both a visualization and a reflection —
-a quiet experiment in mapping **how AI perceives meaning**.
+**GPT-in-Universe** is both a visualization and a reflection —
+a quiet experiment in mapping *how AI perceives meaning*.
 
 > “In the beginning, there was a question —
 > and from that question, a universe unfolded.”
-
-
