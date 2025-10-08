@@ -41,7 +41,7 @@ Languages:
 ### 1️⃣ リポジトリのクローン
 
 ```bash
-git clone https://github.com/<yourname>/gpt-in-universe.git
+git clone https://github.com/uthuyomi/gpt-in-universe.git
 cd gpt-in-universe/web
 ```
 
@@ -166,4 +166,5 @@ MIT License © 2025
 
 > 「はじめに問いがあった。
 > そしてその問いから、ひとつの宇宙が生まれた。」
+
 
