@@ -2,7 +2,7 @@
 
 Languages:
 **Languages:**  
-[🌐 English](README.md) | [🇯🇵 日本語](README_jp.md)
+[🌐 English](README.md) | [🇯🇵 日本語](README_ja.mdd)
 
 ### “Visualizing AI meaning space as a living galaxy.”
 
@@ -195,6 +195,7 @@ a quiet experiment in mapping *how AI perceives meaning*.
 
 > “In the beginning, there was a question —
 > and from that question, a universe unfolded.”
+
 
 
 
