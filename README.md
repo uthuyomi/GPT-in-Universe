@@ -40,7 +40,7 @@ The entire process is local and self-contained — no external APIs are required
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/<yourname>/gpt-in-universe.git
+git clone https://github.com/uthuyomi/gpt-in-universe.git
 cd gpt-in-universe/web
 ```
 
@@ -168,4 +168,5 @@ a quiet experiment in mapping **how AI perceives meaning**.
 
 > “In the beginning, there was a question —
 > and from that question, a universe unfolded.”
+
 
