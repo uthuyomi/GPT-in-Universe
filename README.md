@@ -1,7 +1,8 @@
 # 🌌 GPT-in-Universe
 
 Languages:
-🌐 English | 🇯🇵 日本語
+**Languages:**  
+[🌐 English](README.md) | [🇯🇵 日本語](web/README_JP.md)
 
 ### “Visualizing AI meaning space as a living galaxy.”
 
@@ -194,4 +195,5 @@ a quiet experiment in mapping *how AI perceives meaning*.
 
 > “In the beginning, there was a question —
 > and from that question, a universe unfolded.”
+
 
