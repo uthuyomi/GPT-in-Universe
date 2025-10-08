@@ -1,7 +1,7 @@
 # 🌌 GPT-in-Universe
 
 Languages:
-🌐 English | 🇯🇵 日本語はこちら
+🌐 English | 🇯🇵 日本語
 
 ### “Visualizing AI meaning space as a living galaxy.”
 
