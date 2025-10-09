@@ -1,9 +1,5 @@
 # 🌌 GPT-in-Universe
 
-Languages:
-<<<<<<< HEAD
-🌐 English | 🇯🇵 日本語
-=======
 **Languages:**  
 [🌐 English](README.md) | [🇯🇵 日本語](README_ja.md)
 >>>>>>> 0a4f2f353a7a5f3d528b78f03482e9dc52c56d5c
@@ -199,6 +195,7 @@ a quiet experiment in mapping *how AI perceives meaning*.
 
 > “In the beginning, there was a question —
 > and from that question, a universe unfolded.”
+
 
 
 
