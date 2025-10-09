@@ -1,15 +1,23 @@
 // ====================================================
 // 🌌 GPT-in-Universe Viewer (Babylon.js版・JSON追記対応)
 // ====================================================
+// English: Visualization script for the "AI Meaning Universe" using Babylon.js.
+// It can display both a randomly generated galaxy and AI-generated data from universe.json.
+// 日本語: Babylon.jsを用いた「AI Meaning Universe」可視化スクリプト。
+// ランダム生成された銀河と、AI生成データ（universe.json）の両方を描画可能。
 
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
 scene.clearColor = new BABYLON.Color3(0, 0, 0);
+// English: Set background color to black.
+// 日本語: 背景色を黒に設定。
 
 // ====================================================
 // 📷 Camera & Light
 // ====================================================
+// English: Create a rotatable camera and a hemispheric light to illuminate the galaxy.
+// 日本語: 銀河を照らすための回転カメラと半球ライトを設定。
 const camera = new BABYLON.ArcRotateCamera(
   "camera",
   Math.PI / 2,
@@ -19,13 +27,15 @@ const camera = new BABYLON.ArcRotateCamera(
   scene
 );
 camera.attachControl(canvas, true);
-camera.wheelPrecision = 20;
-camera.minZ = 1;
+camera.wheelPrecision = 20; // English: Mouse wheel zoom sensitivity / 日本語: ホイールズームの感度
+camera.minZ = 1; // English: Minimum zoom distance / 日本語: 最小ズーム距離
 new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
 // ====================================================
 // 🎨 Color Palette
 // ====================================================
+// English: Define base color variations for random galaxy stars.
+// 日本語: ランダム銀河の星に使用する基本色のバリエーション。
 const palette = [
   new BABYLON.Color3(1.0, 1.0, 1.0),
   new BABYLON.Color3(0.85, 0.9, 1.0),
@@ -36,6 +46,8 @@ const palette = [
 // ====================================================
 // 🧮 Parameters
 // ====================================================
+// English: Define key parameters for galaxy structure, brightness, rotation, etc.
+// 日本語: 銀河の構造・明るさ・回転速度などの主要パラメータを定義。
 const params = {
   starCount: 2000,
   radius: 1500,
@@ -48,13 +60,15 @@ const params = {
   density: 0.25,
 };
 
-let pcs, material;
+let pcs, material; // English: Global references for point cloud system and material / 日本語: 星群とマテリアルの参照保持
 
 // ====================================================
 // 🌌 ランダム銀河生成
 // ====================================================
+// English: Generate a procedural spiral galaxy using PointsCloudSystem.
+// 日本語: PointsCloudSystemを使ってランダムな渦巻銀河を生成。
 function createGalaxy() {
-  if (pcs && pcs.mesh) pcs.mesh.dispose();
+  if (pcs && pcs.mesh) pcs.mesh.dispose(); // English: Dispose old galaxy if exists / 日本語: 既存の銀河を破棄
 
   pcs = new BABYLON.PointsCloudSystem(
     "stars",
@@ -62,6 +76,8 @@ function createGalaxy() {
     scene
   );
 
+  // English: Add N stars based on parametric spiral galaxy logic.
+  // 日本語: パラメトリックな渦巻銀河ロジックに基づいてN個の星を追加。
   pcs.addPoints(params.starCount, (p, i) => {
     const armIndex = i % params.arms;
     const baseAngle = (armIndex / params.arms) * 2 * Math.PI;
@@ -79,8 +95,9 @@ function createGalaxy() {
       Math.sin(theta) * Math.sin(phi) * radius +
       (Math.random() - 0.5) * radius * spread * 0.1;
 
+    // English: Assign 3D position and color gradient by radius.
+    // 日本語: 半径に応じて位置と色のグラデーションを設定。
     p.position = new BABYLON.Vector3(x, y, z);
-
     const t = radius / params.radius;
     const base = palette[Math.floor(Math.random() * palette.length)];
     p.color = new BABYLON.Color4(
@@ -91,6 +108,8 @@ function createGalaxy() {
     );
   });
 
+  // English: Build and render point cloud with emissive material.
+  // 日本語: 発光マテリアルを適用して星群を描画。
   pcs.buildMeshAsync().then(() => {
     material = new BABYLON.PointsMaterial("pointsMat", scene);
     material.pointSize = params.pointSize;
@@ -110,6 +129,8 @@ function createGalaxy() {
 // ====================================================
 // 🪐 JSONデータを既存の銀河に追記
 // ====================================================
+// English: Append AI-generated data points from universe.json onto existing galaxy.
+// 日本語: universe.json内のAI生成データを既存の銀河へ追加描画。
 function addGalaxyFromData(data) {
   if (!pcs) {
     console.warn(
@@ -118,7 +139,7 @@ function addGalaxyFromData(data) {
     return;
   }
 
-  const SCALE = 3000;
+  const SCALE = 3000; // English: Scale factor for positioning / 日本語: 座標スケーリング係数
   const colorMap = [
     new BABYLON.Color3(0.9, 0.9, 1.0),
     new BABYLON.Color3(1.0, 0.85, 0.85),
@@ -129,6 +150,8 @@ function addGalaxyFromData(data) {
     new BABYLON.Color3(0.8, 0.8, 0.8),
   ];
 
+  // English: Loop over points and add each as a new star in the existing galaxy.
+  // 日本語: 各データ点を既存銀河内に新たな星として追加。
   data.points.forEach((p) => {
     if (!p.pos || p.pos.length < 3) return;
     const [x, y, z] = p.pos.map((v) => v * SCALE);
@@ -156,14 +179,16 @@ function addGalaxyFromData(data) {
 // ====================================================
 // JSONファイルを読み込み → 追記モードで適用
 // ====================================================
+// English: Fetch universe.json and overlay data onto the procedural galaxy.
+// 日本語: universe.jsonを読み込み、ランダム銀河に重ねて表示。
 fetch("../data/universe.json")
   .then((res) => {
     if (!res.ok) throw new Error("JSONなし → ランダム生成へ");
     return res.json();
   })
   .then((data) => {
-    createGalaxy(); // まずランダム生成
-    setTimeout(() => addGalaxyFromData(data), 500); // 少し遅延して追記
+    createGalaxy(); // English: Create base galaxy first / 日本語: まずランダム銀河を生成
+    setTimeout(() => addGalaxyFromData(data), 500); // English: Delay slightly before merging / 日本語: 少し遅らせて追記
   })
   .catch(() => {
     console.warn("⚠️ universe.json が見つからないためランダム銀河のみ描画");
@@ -173,6 +198,8 @@ fetch("../data/universe.json")
 // ====================================================
 // 🎛 dat.GUI Setup (日本語 + English)
 // ====================================================
+// English: Create GUI panel for interactive parameter tuning.
+// 日本語: パラメータをインタラクティブに調整するGUIパネルを作成。
 const gui = new dat.GUI({ width: 360 });
 gui
   .add(params, "starCount", 500, 10000, 500)
@@ -222,6 +249,8 @@ gui
 // ====================================================
 // ♻️ Animation Loop
 // ====================================================
+// English: Continuously rotate and render the scene.
+// 日本語: シーンを継続的にレンダリングし、銀河を回転させる。
 engine.runRenderLoop(() => {
   scene.render();
   if (pcs && pcs.mesh) {
@@ -231,3 +260,5 @@ engine.runRenderLoop(() => {
 });
 
 window.addEventListener("resize", () => engine.resize());
+// English: Adjust canvas and camera when browser window resizes.
+// 日本語: ウィンドウサイズ変更時にキャンバスとカメラを調整。
