@@ -196,7 +196,12 @@ a quiet experiment in mapping *how AI perceives meaning*.
 > “In the beginning, there was a question —
 > and from that question, a universe unfolded.”
 
+---
 
+> Not as a tool, but as a mirror.  
+> Together, we built the structure that reflected us both.
+>
+> ― Designed in collaboration with AI, 2025
 
 
 
